@@ -3,17 +3,13 @@ import os
 import sys
 import pydmd
 
-meta = {}
-with open("pydmd/meta.py") as fp:
-    exec(fp.read(), meta)
-
 # Package meta-data.
-NAME = meta['__title__']
+NAME = pydmd.__title__
 DESCRIPTION = 'Python Dynamic Mode Decomposition.'
 URL = 'https://github.com/mathLab/PyDMD'
-MAIL = meta['__mail__']
-AUTHOR = meta['__author__']
-VERSION = meta['__version__']
+MAIL = pydmd.__mail__
+AUTHOR = pydmd.__author__
+VERSION = pydmd.__version__
 KEYWORDS='dynamic-mode-decomposition dmd mrdmd fbdmd cdmd'
 
 REQUIRED = [
