@@ -383,3 +383,11 @@ class TestDmd(TestCase):
 
         np.testing.assert_almost_equal(dmd2.reconstructed_data.real,
             dmd.reconstructed_data.real, decimal=6)
+
+
+    def test_spacemu_time(self):
+        spacemu_time = np.load('tests/test_datasets/spacemu_time.npy')
+        print(spacemu_time.shape)
+        dmd = DMD(svd_rank=0)
+        dmd.fit(spacemu_time)
+        np.testing.assert_almost_equal(dmd.reconstructed_data.real, spacemu_time, decimal=3)
