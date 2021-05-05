@@ -100,7 +100,21 @@ class ModesSelectors:
         """
         return partial(DMDBase.ModesSelectors._integral_contribution, n=n)
 
-def select_modes(self, func):
+def _compute_stabilized_quantities(eigs, amplitudes):
+    factors = np.abs(eigs)
+
+    eigs /= factors
+    amplitudes *= eigs
+
+    return (eigs, amplitudes)
+
+def stabilize_modes(dmd):
+    eigs, amps = _compute_stabilized_quantities(dmd.eigs, dmd.amplitudes)
+
+    dmd.operator._eigenvalues = eigs
+    dmd._b = amps
+
+def select_modes(dmd, func):
     """
     Select the DMD modes by using the given `func`.
     `func` has to be a callable function which takes as input the DMD
@@ -120,17 +134,17 @@ def select_modes(self, func):
     >>> dmd.fit(sample_data)
     >>> dmd.select_modes(stable_modes)
     """
-    selected_indeces = func(self)
+    selected_indexes = func(dmd)
 
-    self.operator._eigenvalues = self.operator._eigenvalues[selected_indeces]
-    self.operator._Lambda = self.operator._Lambda[selected_indeces]
+    dmd.operator._eigenvalues = dmd.operator._eigenvalues[selected_indexes]
+    dmd.operator._Lambda = dmd.operator._Lambda[selected_indexes]
 
-    self.operator._eigenvectors = self.operator._eigenvectors[:, selected_indeces]
-    self.operator._modes = self.operator._modes[:, selected_indeces]
+    dmd.operator._eigenvectors = dmd.operator._eigenvectors[:, selected_indexes]
+    dmd.operator._modes = dmd.operator._modes[:, selected_indexes]
 
-    self.operator._Atilde = np.linalg.multi_dot([
-        self.operator._eigenvectors,
-        np.diag(self.operator._eigenvalues),
-        np.linalg.pinv(self.operator._eigenvectors)])
+    dmd.operator._Atilde = np.linalg.multi_dot([
+        dmd.operator._eigenvectors,
+        np.diag(dmd.operator._eigenvalues),
+        np.linalg.pinv(dmd.operator._eigenvectors)])
 
-    self._b = self._compute_amplitudes()
+    dmd._b = dmd._compute_amplitudes()
