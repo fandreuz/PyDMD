@@ -100,20 +100,6 @@ class ModesSelectors:
         """
         return partial(DMDBase.ModesSelectors._integral_contribution, n=n)
 
-def _compute_stabilized_quantities(eigs, amplitudes):
-    factors = np.abs(eigs)
-
-    eigs /= factors
-    amplitudes *= eigs
-
-    return (eigs, amplitudes)
-
-def stabilize_modes(dmd):
-    eigs, amps = _compute_stabilized_quantities(dmd.eigs, dmd.amplitudes)
-
-    dmd.operator._eigenvalues = eigs
-    dmd._b = amps
-
 def select_modes(dmd, func):
     """
     Select the DMD modes by using the given `func`.
@@ -148,3 +134,22 @@ def select_modes(dmd, func):
         np.linalg.pinv(dmd.operator._eigenvectors)])
 
     dmd._b = dmd._compute_amplitudes()
+
+
+def _compute_stabilized_quantities(eigs, amplitudes):
+    factors = np.abs(eigs)
+
+    eigs /= factors
+    amplitudes *= eigs
+
+    return (eigs, amplitudes)
+
+
+def stabilize_modes(dmd, max_distance_from_unity):
+    ok_eigs_indexes = np.abs(1 - dmd.eigs) < max_distance_from_unity
+
+    eigs, amps = _compute_stabilized_quantities(dmd.eigs[ok_eigs_indexes],
+        dmd.amplitudes[ok_eigs_indexes])
+
+    dmd.operator._eigenvalues[ok_eigs_indexes] = eigs
+    dmd._b[ok_eigs_indexes] = amps
