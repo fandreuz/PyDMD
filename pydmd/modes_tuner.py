@@ -146,10 +146,10 @@ def _compute_stabilized_quantities(eigs, amplitudes):
 
 
 def stabilize_modes(dmd, max_distance_from_unity):
-    ok_eigs_indexes = np.abs(1 - dmd.eigs) < max_distance_from_unity
+    bad_eigs_indexes = (1 - np.abs(dmd.eigs)) > max_distance_from_unity
 
-    eigs, amps = _compute_stabilized_quantities(dmd.eigs[ok_eigs_indexes],
-        dmd.amplitudes[ok_eigs_indexes])
+    eigs, amps = _compute_stabilized_quantities(dmd.eigs[bad_eigs_indexes],
+        dmd.amplitudes[bad_eigs_indexes])
 
-    dmd.operator._eigenvalues[ok_eigs_indexes] = eigs
-    dmd._b[ok_eigs_indexes] = amps
+    dmd.operator._eigenvalues[bad_eigs_indexes] = eigs
+    dmd._b[bad_eigs_indexes] = amps
