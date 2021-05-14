@@ -1,6 +1,5 @@
 from functools import partial
 import numpy as np
-from .dmdbase import DMDBase
 
 class ModesSelectors:
     """
@@ -11,6 +10,7 @@ class ModesSelectors:
     functions and immediate usability. For instance, to select the first
     x modes by integral contributions one would call:
 
+    # TODO: check
     >>> from pydmd import DMDBase
     >>> dmd.select_modes(DMDBase.ModesSelectors.integral_contribution(x))
     """
@@ -37,10 +37,10 @@ class ModesSelectors:
         :param float max_distance_from_unity: the maximum distance from the
             unit circle.
         :return callable: function which can be used as the parameter
-            of `DMDBase.select_modes` to select DMD modes according to
+            of `select_modes` to select DMD modes according to
             the criteria of stability.
         """
-        return partial(DMDBase.ModesSelectors._stable_modes,
+        return partial(ModesSelectors._stable_modes,
             max_distance_from_unity=max_distance_from_unity)
 
     @staticmethod
@@ -78,7 +78,7 @@ class ModesSelectors:
         dmd.dmd_time = temp
 
         n_of_modes = modes.shape[1]
-        integral_contributions = [DMDBase.ModesSelectors._compute_integral_contribution(*tp)
+        integral_contributions = [ModesSelectors._compute_integral_contribution(*tp)
             for tp in zip(modes.T, dynamics)]
 
         indexes_first_n = np.array(integral_contributions).argsort()[-n:]
@@ -95,10 +95,10 @@ class ModesSelectors:
 
         :param int n: the number of DMD modes to be selected.
         :return callable: function which can be used as the parameter
-            of `DMDBase.select_modes` to select DMD modes according to
+            of `select_modes` to select DMD modes according to
             the criteria of integral contribution.
         """
-        return partial(DMDBase.ModesSelectors._integral_contribution, n=n)
+        return partial(ModesSelectors._integral_contribution, n=n)
 
 def select_modes(dmd, func):
     """
