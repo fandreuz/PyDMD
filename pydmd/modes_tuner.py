@@ -25,7 +25,7 @@ class ModesSelectors:
         :return np.ndarray: an array of bool, where each "True" index means
             that the corresponding DMD mode is selected.
         """
-        return np.abs(np.abs(dmd.eigs) - 1) < max_distance_from_unity
+        return np.abs(dmd.eigs) - 1 < max_distance_from_unity
 
     @staticmethod
     def stable_modes(max_distance_from_unity):
