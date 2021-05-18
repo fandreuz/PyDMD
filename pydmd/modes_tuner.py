@@ -16,7 +16,7 @@ class ModesSelectors:
     """
 
     @staticmethod
-    def _stable_modes(dmd, max_distance_from_unity):
+    def _stable_modes(dmd, max_distance_from_unity, bidirectional):
         """
         Complete function of the modes selector `stable_modes`.
 
@@ -25,10 +25,13 @@ class ModesSelectors:
         :return np.ndarray: an array of bool, where each "True" index means
             that the corresponding DMD mode is selected.
         """
-        return np.abs(dmd.eigs) - 1 < max_distance_from_unity
+        arr = np.abs(dmd.eigs) - 1
+        if bidirectional:
+            arr = np.abs(arr)
+        return arr < max_distance_from_unity
 
     @staticmethod
-    def stable_modes(max_distance_from_unity):
+    def stable_modes(max_distance_from_unity, bidirectional=False):
         """
         Select all the modes such that the magnitude of the corresponding
         eigenvalue is in `(1-max_distance_from_unity,1+max_distance_from_unity)`,
@@ -41,7 +44,8 @@ class ModesSelectors:
             the criteria of stability.
         """
         return partial(ModesSelectors._stable_modes,
-            max_distance_from_unity=max_distance_from_unity)
+            max_distance_from_unity=max_distance_from_unity,
+            bidirectional=bidirectional)
 
     @staticmethod
     def _compute_integral_contribution(mode, dynamic):
@@ -145,8 +149,9 @@ def _compute_stabilized_quantities(eigs, amplitudes):
     return (eigs, amplitudes)
 
 
-def stabilize_modes(dmd, max_distance_from_unity, min_distance_from_unity=1.e-16, cut_above=False):
-    fixable_eigs_indexes = [eig_module > min_distance_from_unity and eig_module < max_distance_from_unity for eig_module in np.abs(dmd.eigs) - 1]
+def stabilize_modes(dmd, max_distance_from_unity, min_distance_from_unity=1.e-16, cut_above=False, bidirectional=False):
+    fixable_eigs_indexes = [eig_distance > min_distance_from_unity and eig_distance < max_distance_from_unity
+        for eig_distance in np.abs(np.abs(dmd.eigs) - 1)]
 
     eigs, amps = _compute_stabilized_quantities(dmd.eigs[fixable_eigs_indexes],
         dmd.amplitudes[fixable_eigs_indexes])
