@@ -48,6 +48,14 @@ class ModesSelectors:
             bidirectional=bidirectional)
 
     @staticmethod
+    def _amplitude_threshold(dmd, threshold):
+        return np.abs(dmd.amplitudes) > threshold
+
+    @staticmethod
+    def amplitude_threshold(threshold):
+        return partial(ModesSelectors._amplitude_threshold, threshold=threshold)
+
+    @staticmethod
     def _compute_integral_contribution(mode, dynamic):
         """
         Compute the integral contribution across time of the given DMD mode,
