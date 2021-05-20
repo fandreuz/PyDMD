@@ -147,6 +147,8 @@ def select_modes(dmd, func):
 
     dmd._b = dmd._compute_amplitudes()
 
+    return np.where(selected_indexes)[0]
+
 
 def _compute_stabilized_quantities(eigs, amplitudes):
     factors = np.abs(eigs)
@@ -170,5 +172,10 @@ def stabilize_modes(dmd, max_distance_from_unity, min_distance_from_unity=1.e-16
     dmd.operator._eigenvalues[fixable_eigs_indexes] = eigs
     dmd._b[fixable_eigs_indexes] = amps
 
+    stabilized_indexes = np.where(fixable_eigs_indexes)[0]
+
+    cut_indexes = np.array([])
     if cut_above:
-        select_modes(dmd, ModesSelectors.stable_modes(max_distance_from_unity, bidirectional))
+        cut_indexes = select_modes(dmd, ModesSelectors.stable_modes(max_distance_from_unity, bidirectional))
+
+    return (stabilized_indexes, cut_indexes)
