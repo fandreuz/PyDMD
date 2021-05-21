@@ -112,7 +112,7 @@ class ModesSelectors:
         """
         return partial(ModesSelectors._integral_contribution, n=n)
 
-def select_modes(dmd, func):
+def select_modes(dmd, func, recompute_amplitudes=False):
     """
     Select the DMD modes by using the given `func`.
     `func` has to be a callable function which takes as input the DMD
@@ -145,7 +145,10 @@ def select_modes(dmd, func):
         np.diag(dmd.operator._eigenvalues),
         np.linalg.pinv(dmd.operator._eigenvectors)])
 
-    dmd._b = dmd._compute_amplitudes()
+    if recompute_amplitudes:
+        dmd._b = dmd._compute_amplitudes()
+    else:
+        dmd._b = dmd._b[selected_indexes]
 
     return np.where(selected_indexes)[0]
 
