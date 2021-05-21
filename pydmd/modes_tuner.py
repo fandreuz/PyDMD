@@ -49,6 +49,8 @@ class ModesSelectors:
 
     @staticmethod
     def _amplitude_threshold(dmd, threshold):
+        print(threshold)
+        print(np.abs(dmd.amplitudes) > threshold)
         return np.abs(dmd.amplitudes) > threshold
 
     @staticmethod
@@ -133,6 +135,7 @@ def select_modes(dmd, func, recompute_amplitudes=False):
     >>> dmd.select_modes(stable_modes)
     """
     selected_indexes = func(dmd)
+    print('Count: {}'.format(np.sum(selected_indexes)))
 
     dmd.operator._eigenvalues = dmd.operator._eigenvalues[selected_indexes]
     dmd.operator._Lambda = dmd.operator._Lambda[selected_indexes]
