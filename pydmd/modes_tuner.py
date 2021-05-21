@@ -179,6 +179,6 @@ def stabilize_modes(dmd, max_distance_from_unity, min_distance_from_unity=1.e-16
 
     cut_indexes = np.array([])
     if cut_above:
-        cut_indexes = select_modes(dmd, ModesSelectors.stable_modes(max_distance_from_unity, bidirectional))
+        cut_indexes = select_modes(dmd, ModesSelectors.stable_modes(max_distance_from_unity, bidirectional), recompute_amplitudes=True)
 
     return (stabilized_indexes, cut_indexes)
