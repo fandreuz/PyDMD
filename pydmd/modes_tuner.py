@@ -166,6 +166,9 @@ def _compute_stabilized_quantities(eigs, amplitudes):
 
 
 def stabilize_modes(dmd, max_distance_from_unity, min_distance_from_unity=1.e-16, cut_above=False, bidirectional=False):
+    print(dmd.eigs)
+    print(dmd.eigs.shape)
+
     fixable_eigs_indexes = [eig_distance > min_distance_from_unity and eig_distance < max_distance_from_unity
         for eig_distance in (
             np.abs(np.abs(dmd.eigs) - 1) if bidirectional
