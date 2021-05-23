@@ -177,7 +177,7 @@ def stabilize_modes(dmd, max_distance_from_unity, min_distance_from_unity=1.e-16
 
     for eig_distance in (np.abs(np.abs(dmd.eigs) - 1) if bidirectional else np.abs(dmd.eigs) - 1):
         print(eig_distance)
-        print(ig_distance > min_distance_from_unity and eig_distance < max_distance_from_unity)
+        print(eig_distance > min_distance_from_unity and eig_distance < max_distance_from_unity)
         print('------')
 
     print(fixable_eigs_indexes)
