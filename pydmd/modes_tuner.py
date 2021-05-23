@@ -166,23 +166,12 @@ def _compute_stabilized_quantities(eigs, amplitudes):
 
 
 def stabilize_modes(dmd, max_distance_from_unity, min_distance_from_unity=1.e-16, cut_above=False, bidirectional=False):
-    print(dmd.eigs)
-    print(dmd.eigs.shape)
-
-    fixable_eigs_indexes = [eig_distance > min_distance_from_unity and eig_distance < max_distance_from_unity
+    fixable_eigs_indexes = [eig_distance.item() > min_distance_from_unity and eig_distance.item() < max_distance_from_unity
         for eig_distance in (
             np.abs(np.abs(dmd.eigs) - 1) if bidirectional
             else np.abs(dmd.eigs) - 1
     )]
 
-    for eig_distance in (np.abs(np.abs(dmd.eigs) - 1) if bidirectional else np.abs(dmd.eigs) - 1):
-        print(eig_distance)
-        print(eig_distance > min_distance_from_unity and eig_distance < max_distance_from_unity)
-        print('------')
-
-    print(fixable_eigs_indexes)
-    print(dmd.eigs[fixable_eigs_indexes])
-    print(dmd.amplitudes[fixable_eigs_indexes])
     eigs, amps = _compute_stabilized_quantities(dmd.eigs[fixable_eigs_indexes],
         dmd.amplitudes[fixable_eigs_indexes])
 
