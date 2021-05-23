@@ -172,6 +172,8 @@ def stabilize_modes(dmd, max_distance_from_unity, min_distance_from_unity=1.e-16
             else np.abs(dmd.eigs) - 1
     )]
 
+    print(dmd.eigs[fixable_eigs_indexes])
+    print(dmd.amplitudes[fixable_eigs_indexes])
     eigs, amps = _compute_stabilized_quantities(dmd.eigs[fixable_eigs_indexes],
         dmd.amplitudes[fixable_eigs_indexes])
 
