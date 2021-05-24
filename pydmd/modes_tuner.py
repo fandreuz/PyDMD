@@ -49,8 +49,8 @@ class ModesSelectors:
 
     @staticmethod
     def _amplitude_threshold(dmd, threshold):
-        print(threshold)
-        print(np.abs(dmd.amplitudes) > threshold)
+        print('Amplitude threshold: {}'.format(threshold))
+        print('Bool amp cut array: {}'.format(np.abs(dmd.amplitudes) > threshold))
         return np.abs(dmd.amplitudes) > threshold
 
     @staticmethod
@@ -135,7 +135,6 @@ def select_modes(dmd, func, recompute_amplitudes=False):
     >>> dmd.select_modes(stable_modes)
     """
     selected_indexes = func(dmd)
-    print('Count: {}'.format(np.sum(selected_indexes)))
 
     dmd.operator._eigenvalues = dmd.operator._eigenvalues[selected_indexes]
     dmd.operator._Lambda = dmd.operator._Lambda[selected_indexes]
@@ -180,8 +179,9 @@ def stabilize_modes(dmd, max_distance_from_unity, min_distance_from_unity=1.e-16
 
     stabilized_indexes = np.where(fixable_eigs_indexes)[0]
 
-    cut_indexes = np.array([])
     if cut_above:
         cut_indexes = select_modes(dmd, ModesSelectors.stable_modes(max_distance_from_unity, bidirectional), recompute_amplitudes=True)
+    else:
+        cut_indexes = np.array([])
 
     return (stabilized_indexes, cut_indexes)
