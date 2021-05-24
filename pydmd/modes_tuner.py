@@ -152,7 +152,7 @@ def select_modes(dmd, func, recompute_amplitudes=False):
     else:
         dmd._b = dmd._b[selected_indexes]
 
-    return np.where(selected_indexes)[0]
+    return np.where(np.logical_not(selected_indexes))[0]
 
 
 def _compute_stabilized_quantities(eigs, amplitudes):
