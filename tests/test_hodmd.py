@@ -73,7 +73,6 @@ class TestHODmd(TestCase):
     def test_eigs_1(self):
         dmd = HODMD(svd_rank=-1, svd_rank_extra=-1)
         dmd.fit(X=sample_data)
-        print('eig',len(dmd.eigs))
         assert len(dmd.eigs) == 14
 
     def test_eigs_2(self):
@@ -97,9 +96,7 @@ class TestHODmd(TestCase):
     def test_dynamics_opt_1(self):
         dmd = HODMD(svd_rank=5, opt=True)
         dmd.fit(X=sample_data)
-        print(dmd.dynamics.shape)
         assert dmd.dynamics.shape == (4, sample_data.shape[1])
-
 
     def test_reconstructed_data(self):
         dmd = HODMD(d=2)
