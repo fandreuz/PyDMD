@@ -598,3 +598,12 @@ class TestHankelDmd(TestCase):
         dmd = HankelDMD(svd_rank=-1, d=5)
         dmd.fit(X=sample_data)
         np.testing.assert_array_almost_equal(dmd.amplitudes, dmd._sub_dmd._b)
+
+    def test_N_equals_d(self):
+        snapshots = np.ones((20,10))
+        HankelDMD(d=10).fit(X=snapshots)
+
+    def test_N_smaller_d(self):
+        snapshots = np.ones((20,10))
+        HankelDMD(d=11).fit(X=snapshots)
+        # this should throw a nice exception
