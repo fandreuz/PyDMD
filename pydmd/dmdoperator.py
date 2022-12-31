@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 from .linalg import build_linalg_module, is_array
 from .utils import compute_svd
@@ -72,6 +73,10 @@ class DMDOperator:
 
         linalg_module = build_linalg_module(X)
 
+        VV = linalg_module.dot(V, V.conj().swapaxes(-1, -2))
+        identity = linalg_module.to(VV, np.identity(VV.shape[-1]))
+        self._phase_space_prediction = linalg_module.dot(Y, identity - VV)
+
         if self._tikhonov_regularization is not None:
             self._norm_X = linalg_module.norm(X)
         atilde = self._least_square_operator(U, s, V, Y)
@@ -142,6 +147,13 @@ class DMDOperator:
             raise ValueError("You need to call fit before")
         else:
             return self._Atilde
+
+    @property
+    def phase_space_prediction(self):
+        if not hasattr(self, "_phase_space_prediction") or self._phase_space_prediction is None:
+            raise ValueError("You need to call fit before")
+        else:
+            return self._phase_space_prediction
 
     def _least_square_operator(self, U, s, V, Y):
         """
