@@ -69,12 +69,15 @@ class DLDMD(torch.nn.Module):
         if input.ndim == 2:
             input = input[None]
 
+        logging.debug(f"Input shape: {input.shape}")
         encoded_input = self._encoder(input)
+        logging.debug(f"Encoded input shape: {encoded_input.shape}")
         self._dmd.fit(encoded_input)
         self._dmd.dmd_time["tend"] = (
             self._dmd.original_time["tend"] + self._prediction_snapshots
         )
         encoded_output = self._dmd.reconstructed_data
+        logging.debug(f"Encoded output shape: {encoded_output.shape}")
 
         if not torch.is_complex(input):
             old_dtype = encoded_output.dtype
