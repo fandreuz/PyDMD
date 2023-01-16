@@ -35,7 +35,7 @@ jobs:
         key: SegTrackv2-key
 
     - name: Download SegTrackv2
-      if: steps.cache-packages.outputs.cache-hit != 'true'
+      if: steps.cache-segtrackv2.outputs.cache-hit != 'true'
       run: |
         curl https://web.engr.oregonstate.edu/~lif/SegTrack2/SegTrackv2.zip --output SegTrackv2.zip
         unzip -qq SegTrackv2.zip
