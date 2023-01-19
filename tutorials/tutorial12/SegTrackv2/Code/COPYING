@@ -1,0 +1,50 @@
+Copyright (C) 2013 Georgia Institute of Technology
+
+For licensing please contact Fuxin Li
+
+ Fuxin LI
+ fli@cc.gatech.edu
+
+ School of Interactive Computing
+ Georgia Institute of Technology
+ North Avenue
+ Atlanta GA 30332
+ USA
+    
+LICENSING AGREEMENT
+
+This package, SegTrack2, is granted free of charge for non-commercial research 
+and education purposes. The software and derivatives of the software must 
+not be distributed commercially without prior 
+permission from the authors. A license must be obtained from the authors 
+for commercial purposes.
+
+Scientific results produced using the SegTrack2 software should acknowledge its use 
+from the authors and cite the following articles (we would like to hear about it 
+if it turns out to be useful in your work and/or whenever research based on it is 
+published):  
+
+Fuxin Li, Taeyoung Kim, Ahmad Humayun, David Tsai, James M. Rehg. Video Segmentation by Tracking Many Figure-Ground Segments. 
+In IEEE International Conference on Computer Vision (ICCV), 2013. 
+
+@inproceedings{li2013segtrack,
+  title = {Video Segmentation by Tracking Many Figure-Ground Segments},
+  author = {Fuxin Li and Taeyoung Kim and Ahmad Humayun and David Tsai and James M. Rehg},
+  year = {2013},
+  booktitle = {IEEE International Conference on Computer Vision (ICCV)},
+  pdf = {http://www.cc.gatech.edu/~fli/segtrack2_cameraready.pdf}
+}
+
+
+THE PROGRAM IS LICENSED FREE OF CHARGE FOR ACADEMIC USE. THERE IS NO WARRANTY
+FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. THE SOFTWARE IS 
+PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING 
+BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR 
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS 
+BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+By using the SegTrack2 software you agree to all licensing terms.
+
