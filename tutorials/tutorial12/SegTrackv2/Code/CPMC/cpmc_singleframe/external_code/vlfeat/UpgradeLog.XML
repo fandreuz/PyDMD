@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="vlfeat">
+</Property><Property Name="Solution File" Value="E:\Fuxin\AeroFS\SegTrack\Code\cpmc_singleframe\cpmc_singleframe\external_code\vlfeat\vlfeat.sln">
+</Property><Property Name="Date" Value="Tuesday, June 11, 2013">
+</Property><Property Name="Time" Value="0:32 AM">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="vlfeat.sln" Description="File successfully backed up as E:\Fuxin\AeroFS\SegTrack\Code\cpmc_singleframe\cpmc_singleframe\external_code\vlfeat\vlfeat.sln.old">
+</Event><Event ErrorLevel="0" Project="vlfeat" Source="vlfeat.vcproj" Description="Converting project file 'E:\Fuxin\AeroFS\SegTrack\Code\cpmc_singleframe\cpmc_singleframe\external_code\vlfeat\vlfeat.vcproj'.">
+</Event><Event ErrorLevel="1" Project="vlfeat" Source="vlfeat.vcproj" Description="VCConvertEngine could not convert attribute CompileAsManaged =  under Tool VCNMakeTool.">
+</Event><Event ErrorLevel="1" Project="vlfeat" Source="vlfeat.vcproj" Description="VCConvertEngine could not convert attribute CompileAsManaged =  under Tool VCNMakeTool.">
+</Event><Event ErrorLevel="0" Project="vlfeat" Source="vlfeat.vcproj" Description="Done converting to new project file 'E:\Fuxin\AeroFS\SegTrack\Code\cpmc_singleframe\cpmc_singleframe\external_code\vlfeat\vlfeat.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="vlfeat" Source="vlfeat.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="vlfeat.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="vlfeat.sln" Description="Converted">
+</Event></UpgradeLog>

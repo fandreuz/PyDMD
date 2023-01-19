@@ -1,0 +1,129 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%   INSTALLATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+This should run without needing any installation. Compiled mex files are provided for both Windows 64-bit and Linux 64-bit. It was tested under Windows 7 and Ubuntu 12.04. If you need to recompile,
+most files should recompile without a problem. However /Code/CSI/assign_superpix.cpp needs C++ 03, in linux please run "make" from the command line
+to compile it (and specify the correct MATLAB folders in the Makefile). For compiling the relevant toolboxes such as vlfeat, please consult the respective sources.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%   USAGE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Add paths for all the code:
+
+add_all_paths;
+
+Running SPT on a sequence:
+Run segtrack_run_SPT.m to compute all boundaries/segments/features and track segments on a dataset.
+
+Example:
+
+segtrack_run_SPT('./ImageSets/girl.txt','./');
+
+segtrack_run_SPT saves a ".mat" file with the name of the dataset that contains essential elements
+of the algorithm result. Within the mat file:
+
+forward_map: Each row correspond to a segment id, each column correspond to a frame. For row i and column j, forward_map stores the matched segment in frame j+1 for the i-th segment in frame j.
+back_map: Similar to forward_map, but backwards. For row i and column j, back_map stores the matched segment in frame j for the i-th segment in frame j+1.
+          back_map is used in the function plot_tracks_from_back_map which plots the segment tracks in the MySegmentTracks folder.
+LinReg_obj: The stored H and C matrices for all the segment tracks. This can be used if one wants to continue tracking, or re-do the regression with a different regularization.
+rf_obj: The random feature object specifying the feature embedding. This is needed when generating new testing samples (which need to be embedded as well).
+mask_type: The name of the subfolder in MySegmentsMat that designates the segment type (user-specified).
+lambda: The lambda that is used in ridge regularization.
+w: The regression weight vectors.
+
+
+segtrack_run_SPT will also generate a folder named "MySegmentTracks" within which all the segment tracks that goes until the end of the sequence are presented.
+
+After finishing segtrack_run_SPT, one can go inside MySegmentTracks to locate the segment tracks of interest. Then call segtrack_run_CSI.m for running CSI inference.
+
+Example:
+
+segtrack_run_CSI('./ImageSets/girl.txt','./', [1 13 7]);
+
+will attempt to do inference on the tracks 1, 13 and 7 in MySegmentTracks. One can of course run CSI jointly on all tracks, but it will be slow for most sequences.
+
+segtrack_run_CSI will generate tracks within the folder MySegmentTracks/CSI/sequence_name/... Sometimes it looks worse than the SPT results, this is mainly because
+that pairwise optical flow is used in CSI which is often inaccurate. If this is the case, one could try setting lambda2 = 0. In the journal version of the paper we 
+plan to improve on the use of optical flow in CSI to make it more accurate, please keep tuned.
+
+Experiments on SegTrack v2:
+Enter the /Code directory.
+
+cd Code
+
+Run conduct_all_experiments.m for SPT on all the sequences in SegTrack v2 (May take up to 1 week from scratch!)
+Run print_all_results.m to print the results of SPT.
+Run conduct_all_dp_experiments.m for running the dynamic programming tracking by matching the appearance in consecutive frames.
+Run find_CSI_parms.m for the composite statistical inference algorithm.
+
+
+Note that the results can be slightly different from in the paper because of the randomness in Random Fourier features.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%   Changing Certain Components in the Code
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Currently, the code is very slow because it calls several extremely slow routines: the Classic+NL optical flow, CPMC, and Color-SIFT features.
+Note the CPMC is customized slightly to accomodate boundary computation from optical flow, so an off-the-shelf CPMC release won't work here.
+If one wants to substitute for other flow/boundary/segmentation/feature methods, please go to those respective locations:
+flow:
+Code/SPT/compute_all_flow.m
+
+boundary:
+Code/SPT/compute_all_boundaries.m
+
+segment:
+Code/SPT/run_cpmc_dataset.m
+
+color feature:
+Code/SPT/compute_color_sift_feature.m
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%    Citation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+If you use this code in your research or application, please cite our paper Li, Kim, Humayun, Tsai and Rehg. Video Segmentation by Tracking Many Figure-Ground Segments. ICCV, 2013.
+
+bibtex entry:
+
+@inproceedings{FliICCV2013, 
+author = {Fuxin Li and Taeyoung Kim and Ahmad Humayun and David Tsai and James M. Rehg}, 
+title = { Video Segmentation by Tracking Many Figure-Ground Segments}, 
+booktitle = {ICCV}, 
+year = {2013} } 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%   Acknowledgements
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Certain packages belong to their respective authors:
+classic_NL_Code: Deqing Sun, Stefan Roth and Michael Black. Secrets of Optical Flow Estimation and Their Principles. CVPR 2010 
+                 See http://cs.brown.edu/~dqsun/research/software.html
+
+CPMC: Joao Carreira and Cristian Sminchisescu. CPMC: Automatic Object Segmentation Using Constrained Parametric Min-Cuts. PAMI 2012. 
+      See http://www.maths.lth.se/matematiklth/personal/sminchis/code/cpmc/index.html. The Windows port is done by Yin Li (http://yinli.cvpr.net/).
+      CPMC calls many libraries such as VLFeat, Hochbaum's PseudoFlow etc., please check it out in CPMC's readme.
+
+GB: Marius Leordeanu, Rahul Sukthankar and Cristian Sminchisescu. Efficient Closed-Form Solution to Generalized Boundary Detection. ECCV 2012. 
+    See http://109.101.234.42/code.php
+
+minConf: Mark Schmidt. See http://www.di.ens.fr/~mschmidt/Software/minConf.html
+
+randfeat: Fuxin Li, Catalin Ionescu and Cristian Sminchisescu. Paper: Fuxin Li, Guy Lebanon, Christian Sminchisescu. 
+          A Linear Approximation to the chi^2 Kernel with Geometric Convergence. arXiv:1206.4074. [cs.LG]. 
+          See http://www.cc.gatech.edu/~fli/
+
+DP_Code is adapted from the code from the paper Hamed Pirsiavash, Deva Ramanan, Charless Fowlkes, 
+          Globally-Optimal Greedy Algorithms for Tracking a Variable Number of Objects, CVPR 2011. 
+          See http://people.csail.mit.edu/hpirsiav/
+        However the current version included here is very different from the original code, mostly because it has no unary terms.
+
+utils contains some utility code that comes from the Internet, please check inside for their respective authors.
+
+Copyright 2013 Georgia Institute of Technology
+
+Fuxin Li
+School of Interactive Computing
+Georgia Institute of Technology
+2013
+
+fli@cc.gatech.edu
