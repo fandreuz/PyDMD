@@ -46,8 +46,14 @@ jobs:
     - id: files
       uses: jitterbit/get-changed-files@v1
 
+    - name: Configure git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+
     - name: Convert tutorials
       run: |
+        export FILES=
         for file in ${{ steps.files.outputs.all }}; do
           if [[ $file == *tutorial-5* ]]; then
             echo "Skipped $file"
@@ -56,21 +62,25 @@ jobs:
 
             pyfilename=$(echo ${filename%?????})py
             jupyter nbconvert --execute $file --to python --output $pyfilename
-            git add $(dirname $file)/${pyfilename}
+            export FILES=$FILES,$(dirname $file)/${pyfilename}
 
             htmlfilename=$(echo ${filename%?????} | sed -e 's/-//g')html
             jupyter nbconvert --execute $file --to html --output $htmlfilename --output-dir=docs/source/_tutorials
-            git add docs/source/_tutorials/${htmlfilename}
+            export FILES=$FILES,docs/source/_tutorials/${htmlfilename}
           fi
         done
-
-    - name: Configure git
-      run: |
-        git config user.name "github-actions[bot]"
-        git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-      
-    - name: Push changes
-      run: |
-        git commit -m "export tutorials ($GITHUB_SHA)"
-        git push
+    
+    - uses: benjlevesque/short-sha@v2.1
+      id: short-sha
         
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v4
+      with:
+        reviewers: fandreuz
+        assignees: fandreuz
+        labels: maintenance
+        title: Export tutorial changed in ${{ steps.short-sha.outputs.sha }}
+        branch: export-tutorial-${{ steps.short-sha.outputs.sha }}
+        commit-message: export tutorials changed in ${{ steps.short-sha.outputs.sha }}
+        delete-branch: true
+        add-paths: ${{ env.FILES }}
