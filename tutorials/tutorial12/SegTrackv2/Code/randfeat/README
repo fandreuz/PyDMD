@@ -1,0 +1,8 @@
+Use InitExplicitKernel to initialize a random Fourier feature kernel, and then use rf_featurize or rf_pca_featurize to find the random features.
+
+rf_pca_featurize does the PCA on random features as in [Li et al. 2012]. 
+rf_pca_multipart does the PCA using the class LinearRegressor_Data, so that one can load data in multiple chunks and perform PCA once.
+
+LinearRegressor_Data is a nice class for performing least squares/ridge regression/PCA/Group Lasso.
+
+[Li et al. 2012] Fuxin Li, Guy Lebanon, Cristian Sminchisescu. Chebyshev Approximations to the Histogram Chi-Square Kernel. CVPR 2012.
