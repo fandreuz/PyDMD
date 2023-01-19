@@ -1,0 +1,19 @@
+﻿Build started 6/11/2013 12:33:04 AM.
+     1>Project "E:\Fuxin\AeroFS\SegTrack\Code\cpmc_singleframe\cpmc_singleframe\external_code\vlfeat\vlfeat.vcxproj" on node 2 (build target(s)).
+     1>Build:
+         nmake /f Makefile.mak
+         
+         Microsoft (R) Program Maintenance Utility Version 10.00.30319.01
+         Copyright (C) Microsoft Corporation.  All rights reserved.
+         
+         === COMPILING FOR 64-BIT
+         === DEBUGGING OFF
+         	mkdir bin\win64\objs
+     1>NMAKE : fatal error U1073: don't know how to make '"C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\redist\amd64\Microsoft.VC90.CRT\msvcr90.dll"'
+         Stop.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.MakeFile.Targets(38,5): error MSB3073: The command "nmake /f Makefile.mak" exited with code 2.
+     1>Done Building Project "E:\Fuxin\AeroFS\SegTrack\Code\cpmc_singleframe\cpmc_singleframe\external_code\vlfeat\vlfeat.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.77

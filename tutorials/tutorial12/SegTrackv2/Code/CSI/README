@@ -1,0 +1,4 @@
+In Windows, mex assign_superpix.cpp should be sufficient to compile the file assign_superpix.cpp, with a modern Visual Studio such as 2010. 
+
+However in linux with gcc, one should run "make" from the command line to compile the mex file. 
+The main reason is that an additional flag -std=c++0x is needed since the code uses C++03 standard.
