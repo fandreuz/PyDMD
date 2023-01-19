@@ -71,6 +71,14 @@ jobs:
       
     - name: Push changes
       run: |
-        git commit -m "export tutorials ($GITHUB_SHA)"
-        git push
+        git commit -m "export tutorials changed in $GITHUB_SHA"
         
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v4
+      with:
+        reviewers: fandreuz
+        assignees: fandreuz
+        labels: maintenance
+        title: Export tutorial changed in ${{ github.sha }}
+        branch: export-tutorial-${{ github.sha }}
+        delete-branch: true
