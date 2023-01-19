@@ -23,6 +23,8 @@ from matplotlib import pyplot as plt
 from pydmd import DMD
 from pydmd.plotter import plot_modes_2D
 
+import logging
+
 
 # Now, we create the dataset: a hyperbolic sine with damped oscillations is obtained from the following formula:
 # - $f(x,y,t) = \text{senh}(x)\text{senh}(y)1.2\text{i}^{-t}$.
@@ -98,7 +100,7 @@ print("Shape after manipulation: {}".format(dmd.reconstructed_data.shape))
 
 # Now the cool trick: we combine the reconstructed dataset to create an animation that shows the evolution of our system. We underline that you need ffmpeg installed in order to see the video.
 
-# In[ ]:
+# In[7]:
 
 
 fig = plt.figure()
