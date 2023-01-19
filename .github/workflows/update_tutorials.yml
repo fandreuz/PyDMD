@@ -46,6 +46,11 @@ jobs:
     - id: files
       uses: jitterbit/get-changed-files@v1
 
+    - name: Configure git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+
     - name: Convert tutorials
       run: |
         for file in ${{ steps.files.outputs.all }}; do
@@ -63,14 +68,20 @@ jobs:
             git add docs/source/_tutorials/${htmlfilename}
           fi
         done
-
-    - name: Configure git
-      run: |
-        git config user.name "github-actions[bot]"
-        git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-      
-    - name: Push changes
-      run: |
-        git commit -m "export tutorials ($GITHUB_SHA)"
-        git push
+    
+    - uses: benjlevesque/short-sha@v2.1
+      id: short-sha
         
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v4
+      with:
+        reviewers: fandreuz
+        assignees: fandreuz
+        labels: maintenance
+        title: Export tutorial changed in ${{ steps.short-sha.outputs.sha }}
+        branch: export-tutorial-${{ steps.short-sha.outputs.sha }}
+        commit-message: export tutorials changed in ${{ steps.short-sha.outputs.sha }}
+        delete-branch: true
+        add-paths: |
+          tutorials/tutorial*/tutorial*.html
+          tutorials/tutorial*/tutorial*.py
