@@ -63,14 +63,14 @@ jobs:
             git add docs/source/_tutorials/${htmlfilename}
           fi
         done
-
-    - name: Configure git
-      run: |
-        git config user.name "github-actions[bot]"
-        git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-      
-    - name: Push changes
-      run: |
-        git commit -m "export tutorials ($GITHUB_SHA)"
-        git push
         
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v4
+      with:
+        reviewers: fandreuz,ndem0,mtezzele
+        assignees: fandreuz
+        labels: maintenance
+        title: Export tutorial changed in $GITHUB_SHA
+        branch: export-tutorial-$GITHUB_SHA
+        delete-branch: true
+        commit-message: update tutorials changed in $GITHUB_SHA
