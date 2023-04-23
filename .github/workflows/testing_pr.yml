@@ -148,7 +148,7 @@ jobs:
           if [[ $dir != tutorial5* ]]
             then
             cd $dir
-            jupyter nbconvert --to notebook --execute ${dir}*.ipynb
+            jupyter nbconvert --to notebook --execute *.ipynb
             cd ..
           fi
         done
